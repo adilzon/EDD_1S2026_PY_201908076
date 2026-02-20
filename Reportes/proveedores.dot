@@ -1,0 +1,17 @@
+digraph Proveedores {
+rankdir=LR;
+node [shape=box, style=filled, fillcolor=lightblue];
+p0 [label="Codigo: P001\nNombre: Proveedor Uno\nTelefono: 5555-1111"];
+p1 [label="Codigo: P002\nNombre: Proveedor Dos\nTelefono: 5555-2222"];
+p2 [label="Codigo: P003\nNombre: Proveedor Tres\nTelefono: 5555-3333"];
+p0 -> p1;
+p1 -> p2;
+p2 -> p0;
+node [shape=ellipse, fillcolor=lightyellow];
+e0 [label="Entrega: E001\nFecha: 2025-02-01\nCantidad: 100"];
+p0 -> e0;
+e1 [label="Entrega: E002\nFecha: 2025-02-10\nCantidad: 50"];
+e0 -> e1;
+e2 [label="Entrega: E003\nFecha: 2025-02-15\nCantidad: 200"];
+p1 -> e2;
+}
