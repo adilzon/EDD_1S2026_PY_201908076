@@ -1,0 +1,28 @@
+digraph ProveedoresEntregas {
+rankdir=LR;
+splines=ortho;
+node [style=filled];
+{ rank=same;
+p0 [shape=box, fillcolor=lightblue, label="NIT: P001\nNombre: Proveedor Uno"];
+p1 [shape=box, fillcolor=lightblue, label="NIT: P002\nNombre: Proveedor Dos"];
+p2 [shape=box, fillcolor=lightblue, label="NIT: P003\nNombre: Proveedor Tres"];
+}
+p0 -> p1;
+p1 -> p2;
+p2 -> p0;
+subgraph cluster_p0 {
+rank=source;
+e0 [shape=box, fillcolor=lightyellow, label="Fecha: 2025-02-01\nFactura: FAC-001\nMedicamento: Paracetamol\nCantidad: 100"];
+p0 -> e0;
+e1 [shape=box, fillcolor=lightyellow, label="Fecha: 2025-02-10\nFactura: FAC-002\nMedicamento: Ibuprofeno\nCantidad: 50"];
+e0 -> e1;
+}
+subgraph cluster_p1 {
+rank=source;
+e2 [shape=box, fillcolor=lightyellow, label="Fecha: 2025-02-15\nFactura: FAC-003\nMedicamento: Amoxicilina\nCantidad: 200"];
+p1 -> e2;
+}
+subgraph cluster_p2 {
+rank=source;
+}
+}

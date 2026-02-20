@@ -3,14 +3,18 @@ package Entrega;
 use strict;
 use warnings;
 
+# =========================================
+# Crear nodo de entrega
+# =========================================
 sub crear {
-    my ($codigo, $fecha, $cantidad) = @_;
+    my ($fecha, $factura, $medicamento, $cantidad) = @_;
 
     my $self = {
-        codigo    => $codigo,
-        fecha     => $fecha,
-        cantidad  => $cantidad,
-        siguiente => undef,
+        fecha       => $fecha,
+        factura     => $factura,
+        medicamento => $medicamento,
+        cantidad    => $cantidad,
+        siguiente   => undef,   # lista simple de entregas
     };
 
     return $self;

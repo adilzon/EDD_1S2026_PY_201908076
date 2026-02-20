@@ -7,7 +7,6 @@ use ListaInventario;
 use Proveedor;
 use ListaProveedores;
 use Entrega;
-use ListaEntregas;
 
 # ==================================================
 # FUNCION: Registrar medicamento desde consola
@@ -43,19 +42,13 @@ sub registrar_medicamento_consola {
     chomp(my $minimo = <STDIN>);
 
     my $medicamento = Medicamento::crear(
-        $codigo,
-        $nombre,
-        $principio,
-        $laboratorio,
-        $cantidad,
-        $vencimiento,
-        $precio,
-        $minimo
+        $codigo, $nombre, $principio, $laboratorio,
+        $cantidad, $vencimiento, $precio, $minimo
     );
 
     ListaInventario::insertar($medicamento);
 
-    print "\n Medicamento registrado correctamente\n";
+    print "\n✅ Medicamento registrado correctamente\n";
 }
 
 # ==================================================
@@ -66,7 +59,7 @@ print "\n=================================\n";
 print "   SISTEMA EDD MedTrack\n";
 print "=================================\n";
 
-# ---- Datos de prueba (Inventario) ----
+# ---------------- INVENTARIO ----------------
 my $m1 = Medicamento::crear(
     "MED002", "Ibuprofeno", "Ibuprofeno",
     "LabA", 20, "2026-05-01", 5.50, 10
@@ -86,19 +79,11 @@ ListaInventario::insertar($m1);
 ListaInventario::insertar($m2);
 ListaInventario::insertar($m3);
 
-# ---- Registro desde consola ----
 registrar_medicamento_consola();
-
-# ---- Mostrar inventario actualizado ----
 ListaInventario::mostrar();
-
-# ---- Reporte Graphviz Inventario ----
 ListaInventario::generar_graphviz();
 
-# ==================================================
-# PRUEBA DIA 3: LISTA CIRCULAR DE PROVEEDORES
-# ==================================================
-
+# ---------------- PROVEEDORES ----------------
 print "\n=================================\n";
 print "   PRUEBA DE PROVEEDORES\n";
 print "=================================\n";
@@ -113,35 +98,35 @@ ListaProveedores::insertar($p3);
 
 ListaProveedores::mostrar();
 
-# ==================================================
-# PRUEBA DIA 4: ENTREGAS POR PROVEEDOR
-# ==================================================
-
+# ---------------- ENTREGAS ----------------
 print "\n=================================\n";
 print "   PRUEBA DE ENTREGAS\n";
 print "=================================\n";
 
-my $e1 = Entrega::crear("E001", "2025-02-01", 100);
-my $e2 = Entrega::crear("E002", "2025-02-10", 50);
-my $e3 = Entrega::crear("E003", "2025-02-15", 200);
+my $e1 = Entrega::crear(
+    "2025-02-01",
+    "FAC-001",
+    "Paracetamol",
+    100
+);
 
-# Agregar entregas al proveedor 1
-ListaEntregas::insertar($p1, $e1);
-ListaEntregas::insertar($p1, $e2);
+my $e2 = Entrega::crear(
+    "2025-02-10",
+    "FAC-002",
+    "Ibuprofeno",
+    50
+);
 
-# Agregar entrega al proveedor 2
-ListaEntregas::insertar($p2, $e3);
+my $e3 = Entrega::crear(
+    "2025-02-15",
+    "FAC-003",
+    "Amoxicilina",
+    200
+);
 
-# Mostrar proveedores con entregas
-ListaProveedores::mostrar();
+Proveedor::agregar_entrega($p1, $e1);
+Proveedor::agregar_entrega($p1, $e2);
+Proveedor::agregar_entrega($p2, $e3);
 
-print "\nDETALLE DE ENTREGAS POR PROVEEDOR:\n";
-ListaEntregas::mostrar($p1);
-ListaEntregas::mostrar($p2);
-ListaEntregas::mostrar($p3);
-
-# ==================================================
-# REPORTE GRAPHVIZ DE PROVEEDORES
-# ==================================================
-
+# ---------------- GRAPHVIZ FINAL ----------------
 ListaProveedores::generar_graphviz();

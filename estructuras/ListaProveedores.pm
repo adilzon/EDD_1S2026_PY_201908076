@@ -5,26 +5,30 @@ use warnings;
 
 my $head = undef;
 
+# =========================================
+# Insertar proveedor en lista circular
+# =========================================
 sub insertar {
     my ($nuevo) = @_;
 
-    # Lista vacía
     if (!defined $head) {
         $head = $nuevo;
-        $nuevo->{siguiente} = $head;
+        $nuevo->{siguiente} = $nuevo;
+        $nuevo->{anterior}  = $nuevo;
         return;
     }
 
-    # Insertar al final (antes del head)
-    my $actual = $head;
-    while ($actual->{siguiente} != $head) {
-        $actual = $actual->{siguiente};
-    }
+    my $tail = $head->{anterior};
 
-    $actual->{siguiente} = $nuevo;
+    $tail->{siguiente} = $nuevo;
+    $nuevo->{anterior} = $tail;
     $nuevo->{siguiente} = $head;
+    $head->{anterior}  = $nuevo;
 }
 
+# =========================================
+# Mostrar proveedores en consola
+# =========================================
 sub mostrar {
     return unless defined $head;
 
@@ -40,72 +44,82 @@ sub mostrar {
     } while ($actual != $head);
 }
 
-# ==================================================
-# FUNCION: Generar reporte Graphviz de proveedores
-# ==================================================
+# =========================================
+# Graphviz: Lista circular de listas
+# =========================================
 sub generar_graphviz {
-    my $archivo = "Reportes/proveedores.dot";
+    my $archivo = "Reportes/proveedores_entregas.dot";
     open(my $fh, '>', $archivo) or die "No se pudo crear $archivo";
 
-    print $fh "digraph Proveedores {\n";
+    print $fh "digraph ProveedoresEntregas {\n";
     print $fh "rankdir=LR;\n";
-    print $fh "node [shape=box, style=filled, fillcolor=lightblue];\n";
+    print $fh "splines=ortho;\n";
+    print $fh "node [style=filled];\n";
 
     return unless defined $head;
 
+    my %pid;
     my $actual = $head;
-    my %ids;
     my $i = 0;
 
-    # ---- Crear nodos de proveedores ----
+    # =====================================
+    # PROVEEDORES (HORIZONTAL)
+    # =====================================
+    print $fh "{ rank=same;\n";
     do {
-        $ids{$actual} = "p$i";
-        print $fh "p$i [label=\"";
-        print $fh "Codigo: $actual->{codigo}\\n";
-        print $fh "Nombre: $actual->{nombre}\\n";
-        print $fh "Telefono: $actual->{telefono}";
-        print $fh "\"];\n";
+        $pid{$actual} = "p$i";
+
+        print $fh "p$i [shape=box, fillcolor=lightblue, label=\"";
+        print $fh "NIT: $actual->{codigo}\\n";
+        print $fh "Nombre: $actual->{nombre}\"];\n";
 
         $actual = $actual->{siguiente};
         $i++;
     } while ($actual != $head);
+    print $fh "}\n";
 
-    # ---- Conectar proveedores (lista circular) ----
+    # Enlaces circulares
     $actual = $head;
     do {
-        my $sig = $actual->{siguiente};
-        print $fh "$ids{$actual} -> $ids{$sig};\n";
-        $actual = $sig;
+        print $fh "$pid{$actual} -> $pid{$actual->{siguiente}};\n";
+        $actual = $actual->{siguiente};
     } while ($actual != $head);
 
-    # ---- Entregas por proveedor ----
-    print $fh "node [shape=ellipse, fillcolor=lightyellow];\n";
-
-    $actual = $head;
+    # =====================================
+    # ENTREGAS (UNA COLUMNA POR PROVEEDOR)
+    # =====================================
     my $e = 0;
+    $actual = $head;
 
     do {
         my $ent = $actual->{entregas};
         my $prev;
 
+        # Subgraph por proveedor (FUERZA vertical)
+        print $fh "subgraph cluster_$pid{$actual} {\n";
+        print $fh "rank=source;\n";
+
         while ($ent) {
             my $eid = "e$e";
-            print $fh "$eid [label=\"";
-            print $fh "Entrega: $ent->{codigo}\\n";
+
+            print $fh "$eid [shape=box, fillcolor=lightyellow, label=\"";
             print $fh "Fecha: $ent->{fecha}\\n";
-            print $fh "Cantidad: $ent->{cantidad}";
-            print $fh "\"];\n";
+            print $fh "Factura: $ent->{factura}\\n";
+            print $fh "Medicamento: $ent->{medicamento}\\n";
+            print $fh "Cantidad: $ent->{cantidad}\"];\n";
 
             if (!$prev) {
-                print $fh "$ids{$actual} -> $eid;\n";
+                print $fh "$pid{$actual} -> $eid;\n";
             } else {
                 print $fh "$prev -> $eid;\n";
             }
 
             $prev = $eid;
-            $ent = $ent->{siguiente};
+            $ent  = $ent->{siguiente};
             $e++;
         }
+
+        print $fh "}\n";
 
         $actual = $actual->{siguiente};
     } while ($actual != $head);
@@ -113,7 +127,8 @@ sub generar_graphviz {
     print $fh "}\n";
     close($fh);
 
-    system("dot -Tpng Reportes/proveedores.dot -o Reportes/proveedores.png");
+    system("dot -Tpng Reportes/proveedores_entregas.dot -o Reportes/proveedores_entregas.png");
+    print "Diagrama generado en: Reportes/proveedores_entregas.png\n";
 }
 
 1;
