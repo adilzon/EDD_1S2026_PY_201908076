@@ -2,11 +2,20 @@ use strict;
 use warnings;
 
 use lib 'estructuras';
+
 use Medicamento;
 use ListaInventario;
 use Proveedor;
 use ListaProveedores;
 use Entrega;
+use ListaEntregas;
+use matriz_dispersa::MatrizDispersa;
+
+# ==================================================
+# VARIABLES GLOBALES DEL SISTEMA
+# ==================================================
+
+my $matriz_precios = matriz_dispersa::MatrizDispersa->new();
 
 # ==================================================
 # FUNCION: Registrar medicamento desde consola
@@ -48,7 +57,25 @@ sub registrar_medicamento_consola {
 
     ListaInventario::insertar($medicamento);
 
-    print "\n✅ Medicamento registrado correctamente\n";
+    print "\nMedicamento registrado correctamente\n";
+}
+
+# ==================================================
+# FUNCION: Mostrar menu principal
+# ==================================================
+sub mostrar_menu {
+    print "\n=================================\n";
+    print "   MENU PRINCIPAL - MedTrack\n";
+    print "=================================\n";
+    print "1. Registrar medicamento manualmente\n";
+    print "2. Carga masiva de medicamentos (CSV)\n";
+    print "3. Mostrar inventario\n";
+    print "4. Buscar medicamento por nombre\n";
+    print "5. Mostrar proveedores\n";
+    print "6. Generar reportes Graphviz\n";
+    print "7. Mostrar matriz dispersa (comparacion de precios)\n";
+    print "0. Salir\n";
+    print "Seleccione una opcion: ";
 }
 
 # ==================================================
@@ -59,74 +86,57 @@ print "\n=================================\n";
 print "   SISTEMA EDD MedTrack\n";
 print "=================================\n";
 
-# ---------------- INVENTARIO ----------------
-my $m1 = Medicamento::crear(
-    "MED002", "Ibuprofeno", "Ibuprofeno",
-    "LabA", 20, "2026-05-01", 5.50, 10
-);
+my $opcion;
 
-my $m2 = Medicamento::crear(
-    "MED001", "Paracetamol", "Acetaminofen",
-    "LabB", 50, "2026-01-01", 3.00, 15
-);
+do {
+    mostrar_menu();
+    chomp($opcion = <STDIN>);
 
-my $m3 = Medicamento::crear(
-    "MED003", "Amoxicilina", "Amoxicilina",
-    "LabC", 10, "2025-12-01", 8.75, 5
-);
+    if ($opcion == 1) {
+        registrar_medicamento_consola();
+    }
+    elsif ($opcion == 2) {
+        print "\nIngrese la ruta del archivo CSV: ";
+        chomp(my $ruta = <STDIN>);
+        ListaInventario::carga_masiva($ruta);
+    }
+    elsif ($opcion == 3) {
+        ListaInventario::mostrar();
+    }
+    elsif ($opcion == 4) {
+        print "\nIngrese el nombre del medicamento: ";
+        chomp(my $nombre = <STDIN>);
 
-ListaInventario::insertar($m1);
-ListaInventario::insertar($m2);
-ListaInventario::insertar($m3);
+        my $med = ListaInventario::buscar_por_nombre($nombre);
 
-registrar_medicamento_consola();
-ListaInventario::mostrar();
-ListaInventario::generar_graphviz();
+        if ($med) {
+            print "\nMedicamento encontrado:\n";
+            print "Codigo: $med->{codigo}\n";
+            print "Nombre: $med->{nombre}\n";
+            print "Cantidad: $med->{cantidad}\n";
+            print "Vence: $med->{vencimiento}\n";
+        } else {
+            print "\nMedicamento no encontrado\n";
+        }
+    }
+    elsif ($opcion == 5) {
+        ListaProveedores::mostrar();
+    }
+    elsif ($opcion == 6) {
+        ListaInventario::generar_graphviz();
+        ListaProveedores::generar_graphviz();
+        print "\nReportes Graphviz generados correctamente\n";
+    }
+    elsif ($opcion == 7) {
+        $matriz_precios->imprimir_lista();
+    }
+    elsif ($opcion == 0) {
+        print "\nSaliendo del sistema...\n";
+    }
+    else {
+        print "\nOpcion invalida\n";
+    }
 
-# ---------------- PROVEEDORES ----------------
-print "\n=================================\n";
-print "   PRUEBA DE PROVEEDORES\n";
-print "=================================\n";
+} while ($opcion != 0);
 
-my $p1 = Proveedor::crear("P001", "Proveedor Uno", "5555-1111");
-my $p2 = Proveedor::crear("P002", "Proveedor Dos", "5555-2222");
-my $p3 = Proveedor::crear("P003", "Proveedor Tres", "5555-3333");
-
-ListaProveedores::insertar($p1);
-ListaProveedores::insertar($p2);
-ListaProveedores::insertar($p3);
-
-ListaProveedores::mostrar();
-
-# ---------------- ENTREGAS ----------------
-print "\n=================================\n";
-print "   PRUEBA DE ENTREGAS\n";
-print "=================================\n";
-
-my $e1 = Entrega::crear(
-    "2025-02-01",
-    "FAC-001",
-    "Paracetamol",
-    100
-);
-
-my $e2 = Entrega::crear(
-    "2025-02-10",
-    "FAC-002",
-    "Ibuprofeno",
-    50
-);
-
-my $e3 = Entrega::crear(
-    "2025-02-15",
-    "FAC-003",
-    "Amoxicilina",
-    200
-);
-
-Proveedor::agregar_entrega($p1, $e1);
-Proveedor::agregar_entrega($p1, $e2);
-Proveedor::agregar_entrega($p2, $e3);
-
-# ---------------- GRAPHVIZ FINAL ----------------
-ListaProveedores::generar_graphviz();
+print "\nSistema finalizado correctamente\n";
