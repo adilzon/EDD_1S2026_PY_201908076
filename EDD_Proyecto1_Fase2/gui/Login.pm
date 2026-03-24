@@ -43,11 +43,15 @@ sub mostrar {
         my $usuario = $txt_user->get_text();
         my $password = $txt_pass->get_text();
         
-        # Por ahora, una validación simple para probar
         if ($usuario eq "admin" && $password eq "1234") {
-            print "¡Acceso concedido al Administrador!\n";
+            $ventana->destroy(); # Cerramos el login
+            
+            # Cargamos y mostramos el dashboard
+            require Dashboard; 
+            Dashboard::mostrar('admin');
         } else {
-            print "Usuario o contraseña incorrectos.\n";
+            # Aquí podrías poner un mensaje de error en la pantalla
+            print "Error de login\n";
         }
     });
 
