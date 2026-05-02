@@ -1,0 +1,21 @@
+codigo,nombre,principio,laboratorio,precio,cantidad,fecha_vencimiento,nivel_minimo
+M001,Paracetamol,Acetaminofen,Bayer,5.50,2,2026-05-10,10
+M002,Ibuprofeno,Ibuprofeno,Pfizer,7.00,8,2026-06-15,10
+M003,Amoxicilina,Amoxicilina,Genfar,12.00,25,2027-01-20,10
+M004,Diclofenaco,Diclofenaco,Roemmers,6.75,9,2026-04-30,10
+M005,Omeprazol,Omeprazol,Sandoz,15.00,1,2026-03-15,5
+M006,Aspirina,Acido Acetilsalicilico,Bayer,4.00,20,2027-08-10,5
+M007,Metformina,Metformina,Novartis,10.00,5,2026-02-01,10
+M008,Losartan,Losartan,Pfizer,18.00,30,2027-12-01,10
+M009,Atorvastatina,Atorvastatina,Abbott,22.00,12,2026-09-10,10
+M010,Clonazepam,Clonazepam,Roche,9.50,3,2026-01-25,8
+M011,Enalapril,Enalapril,Genfar,8.00,14,2027-05-18,10
+M012,Salbutamol,Salbutamol,GSK,13.00,6,2026-11-11,10
+M013,Insulina,Insulina,EliLilly,35.00,40,2027-03-03,15
+M014,Loratadina,Loratadina,Bayer,6.20,7,2026-07-07,10
+M015,Azitromicina,Azitromicina,Teva,16.00,2,2026-08-20,10
+M016,Prednisona,Prednisona,Novartis,11.50,18,2027-10-05,10
+M017,Warfarina,Warfarina,Pfizer,20.00,4,2026-12-12,10
+M018,Clindamicina,Clindamicina,Sandoz,14.00,9,2026-06-06,10
+M019,Fluoxetina,Fluoxetina,EliLilly,17.00,22,2027-09-09,10
+M020,Diazepam,Diazepam,Roche,8.50,5,2026-03-30,10

@@ -1,0 +1,7 @@
+digraph Solicitudes {
+    rankdir=LR;
+    node [shape=circle, style=filled, fillcolor=lightyellow, fontsize=10];
+
+
+    total [shape=box, fillcolor=lightblue, label="Total Solicitudes: 0"];
+}
