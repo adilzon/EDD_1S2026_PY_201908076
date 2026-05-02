@@ -26,27 +26,32 @@ sub insertar_ordenado {
     }
 
     my $actual = $self->{cabeza};
+    my $prev   = undef;
+
     while (defined $actual) {
         if ($medicamento->obtener_codigo lt $actual->obtener_codigo) {
             last;
         }
+        $prev   = $actual;
         $actual = $actual->{siguiente};
     }
 
-    if ($actual == $self->{cabeza}) {
+    if (!defined $prev) {
+        # insertar al inicio
         $medicamento->{siguiente} = $self->{cabeza};
         $self->{cabeza}->{anterior} = $medicamento;
         $self->{cabeza} = $medicamento;
     }
     elsif (!defined $actual) {
+        # insertar al final
         $self->{cola}->{siguiente} = $medicamento;
         $medicamento->{anterior}   = $self->{cola};
         $self->{cola} = $medicamento;
     }
     else {
-        my $anterior = $actual->{anterior};
-        $anterior->{siguiente} = $medicamento;
-        $medicamento->{anterior} = $anterior;
+        # insertar en medio
+        $prev->{siguiente} = $medicamento;
+        $medicamento->{anterior} = $prev;
         $medicamento->{siguiente} = $actual;
         $actual->{anterior} = $medicamento;
     }
