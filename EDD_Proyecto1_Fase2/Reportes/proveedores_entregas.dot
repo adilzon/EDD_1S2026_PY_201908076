@@ -1,4 +1,0 @@
-digraph ProveedoresEntregas {
-rankdir=LR;
-splines=ortho;
-node [style=filled];

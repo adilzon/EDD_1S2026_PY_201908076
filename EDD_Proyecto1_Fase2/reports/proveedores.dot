@@ -1,0 +1,9 @@
+digraph ListaCircular {
+    rankdir=LR;
+    node [shape=box, style=filled, color=lightyellow];
+
+P0 [label="12345678-1\nFarmaGT Distribuciones"];
+P0 -> P1;
+P1 [label="23456789-2\nMediSupply Central S.A."];
+P1 -> P0;
+}

@@ -1,0 +1,4 @@
+digraph Proveedores {
+    rankdir=TB;
+    node [shape=box, style=filled];
+}
