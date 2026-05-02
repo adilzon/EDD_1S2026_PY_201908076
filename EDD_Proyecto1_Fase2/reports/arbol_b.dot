@@ -1,0 +1,7 @@
+digraph ArbolB_Suministros {
+    node [shape=box, style=filled, fontsize=10];
+    rankdir=TB;
+
+
+    raiz [shape=record, label="<f0>| SUM-001 |<f1>| SUM-002 |<f2>| SUM-003 |<f3>\n[3/4]", style=filled, fillcolor="lightgreen"];
+    }

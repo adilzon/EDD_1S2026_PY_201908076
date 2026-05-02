@@ -1,0 +1,34 @@
+digraph AVL_Personal {
+    node [shape=circle, style=filled, fontsize=10];
+    rankdir=TB;
+
+    "COL-30002" [label="Colegio: COL-30002\nNombre: Lic. Carmen Alejandra Ponce López\nTipo: TIPO-03\nDepto: DEP-MED", fillcolor=gold];
+    "COL-30002" -> "COL-20001" [label="Izq"];
+    "COL-20001" [label="Colegio: COL-20001\nNombre: Dr. Alejandro Javier Morales Ríos\nTipo: TIPO-02\nDepto: DEP-CIR", fillcolor=lightblue];
+    "COL-20001" -> "COL-10002" [label="Izq"];
+    "COL-10002" [label="Colegio: COL-10002\nNombre: Dra. Sofía Alejandra Ramírez Cruz\nTipo: TIPO-01\nDepto: DEP-MED", fillcolor=lightblue];
+    "COL-10002" -> "COL-10001" [label="Izq"];
+    "COL-10001" [label="Colegio: COL-10001\nNombre: Dr. Carlos Andrés Méndez Torres\nTipo: TIPO-01\nDepto: DEP-MED", fillcolor=lightgreen];
+    "COL-10002" -> "COL-10003" [label="Der"];
+    "COL-10003" [label="Colegio: COL-10003\nNombre: Dr. Roberto Emilio Castillo Vega\nTipo: TIPO-01\nDepto: DEP-MED", fillcolor=lightgreen];
+    "COL-20001" -> "COL-20003" [label="Der"];
+    "COL-20003" [label="Colegio: COL-20003\nNombre: Dr. Fernando José Alvarado Sánchez\nTipo: TIPO-02\nDepto: DEP-MED", fillcolor=lightblue];
+    "COL-20003" -> "COL-20002" [label="Izq"];
+    "COL-20002" [label="Colegio: COL-20002\nNombre: Dra. Valentina Beatriz Herrera Juárez\nTipo: TIPO-02\nDepto: DEP-CIR", fillcolor=lightgreen];
+    "COL-20003" -> "COL-30001" [label="Der"];
+    "COL-30001" [label="Colegio: COL-30001\nNombre: Lic. María Elena González Ruiz\nTipo: TIPO-03\nDepto: DEP-FAR", fillcolor=lightgreen];
+    "COL-30002" -> "COL-40002" [label="Der"];
+    "COL-40002" [label="Colegio: COL-40002\nNombre: Tec. Sandra Patricia Gómez Xicol\nTipo: TIPO-04\nDepto: DEP-LAB", fillcolor=lightblue];
+    "COL-40002" -> "COL-30004" [label="Izq"];
+    "COL-30004" [label="Colegio: COL-30004\nNombre: Lic. Jorge Luis Monroy Castro\nTipo: TIPO-03\nDepto: DEP-FAR", fillcolor=lightblue];
+    "COL-30004" -> "COL-30003" [label="Izq"];
+    "COL-30003" [label="Colegio: COL-30003\nNombre: Lic. Rosa Miriam Ajú Pérez\nTipo: TIPO-03\nDepto: DEP-CIR", fillcolor=lightgreen];
+    "COL-30004" -> "COL-40001" [label="Der"];
+    "COL-40001" [label="Colegio: COL-40001\nNombre: Tec. Luis Fernando Morales Salazar\nTipo: TIPO-04\nDepto: DEP-LAB", fillcolor=lightgreen];
+    "COL-40002" -> "COL-50002" [label="Der"];
+    "COL-50002" [label="Colegio: COL-50002\nNombre: Lic. Gabriela Fernanda Castillo Ajú\nTipo: TIPO-05\nDepto: DEP-ADM", fillcolor=lightblue];
+    "COL-50002" -> "COL-50001" [label="Izq"];
+    "COL-50001" [label="Colegio: COL-50001\nNombre: Lic. Pedro Antonio Herrera Caal\nTipo: TIPO-05\nDepto: DEP-ADM", fillcolor=lightgreen];
+    "COL-50002" -> "COL-99001" [label="Der"];
+    "COL-99001" [label="Colegio: COL-99001\nNombre: Dr. Registro Inválido Test\nTipo: TIPO-99\nDepto: DEP-XYZ", fillcolor=lightgreen];
+}

@@ -1,0 +1,50 @@
+digraph Matriz {
+    rankdir=TB;
+    node [fontname="Arial"];
+
+    // Proveedores (Filas)
+    P1 [label="23456789-2", shape=box, style=filled, color=lightblue];
+    P0 [label="12345678-1", shape=box, style=filled, color=lightblue];
+
+    // Fabricantes (Columnas)
+    F1 [label="GenericLab", shape=box, style=filled, color=lightgreen];
+    F2 [label="FarmacentroGT", shape=box, style=filled, color=lightgreen];
+    F3 [label="MediTechGT", shape=box, style=filled, color=lightgreen];
+    F5 [label="MediSupplyGT", shape=box, style=filled, color=lightgreen];
+    F0 [label="LabFarma", shape=box, style=filled, color=lightgreen];
+    F4 [label="BuenaVidaGT", shape=box, style=filled, color=lightgreen];
+
+    // Valores
+    N_0_0 [label="20000", shape=circle, style=filled, color=orange];
+    P0 -> N_0_0;
+    F0 -> N_0_0;
+    N_0_1 [label="16000", shape=circle, style=filled, color=orange];
+    P0 -> N_0_1;
+    F1 -> N_0_1;
+    N_0_2 [label="3000", shape=circle, style=filled, color=orange];
+    P0 -> N_0_2;
+    F2 -> N_0_2;
+    N_0_3 [label="15", shape=circle, style=filled, color=orange];
+    P0 -> N_0_3;
+    F3 -> N_0_3;
+    N_0_4 [label="20", shape=circle, style=filled, color=orange];
+    P0 -> N_0_4;
+    F4 -> N_0_4;
+    N_0_5 [label="100000", shape=circle, style=filled, color=orange];
+    P0 -> N_0_5;
+    F5 -> N_0_5;
+    N_1_1 [label="15000", shape=circle, style=filled, color=orange];
+    P1 -> N_1_1;
+    F1 -> N_1_1;
+    N_1_2 [label="4000", shape=circle, style=filled, color=orange];
+    P1 -> N_1_2;
+    F2 -> N_1_2;
+    N_1_4 [label="20", shape=circle, style=filled, color=orange];
+    P1 -> N_1_4;
+    F4 -> N_1_4;
+    N_1_5 [label="25000", shape=circle, style=filled, color=orange];
+    P1 -> N_1_5;
+    F5 -> N_1_5;
+
+    { rank=same; F1; F2; F3; F5; F0; F4; }
+}

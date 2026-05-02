@@ -1,0 +1,28 @@
+digraph G {
+rankdir=LR;
+node [shape=rectangle, style=filled];
+
+n0 [label="Codigo: MED-001\nNombre: Amoxicilina 500mg\nCantidad: 8000\nVence: 2027-06-30", fillcolor=palegreen];
+n1 [label="Codigo: MED-002\nNombre: Ibuprofeno 400mg\nCantidad: 12000\nVence: 2027-09-15", fillcolor=palegreen];
+n0 -> n1;
+n1 -> n0;
+n2 [label="Codigo: MED-003\nNombre: Metformina 850mg\nCantidad: 6000\nVence: 2027-03-01", fillcolor=palegreen];
+n1 -> n2;
+n2 -> n1;
+n3 [label="Codigo: MED-004\nNombre: Omeprazol 20mg\nCantidad: 10000\nVence: 2027-04-25", fillcolor=palegreen];
+n2 -> n3;
+n3 -> n2;
+n4 [label="Codigo: MED-005\nNombre: Azitromicina 500mg\nCantidad: 3000\nVence: 2027-02-14", fillcolor=palegreen];
+n3 -> n4;
+n4 -> n3;
+n5 [label="Codigo: MED-006\nNombre: Paracetamol 500mg\nCantidad: 15000\nVence: 2027-12-31", fillcolor=palegreen];
+n4 -> n5;
+n5 -> n4;
+n6 [label="Codigo: MED-007\nNombre: Diclofenaco 75mg Inyectable\nCantidad: 4000\nVence: 2027-07-20", fillcolor=palegreen];
+n5 -> n6;
+n6 -> n5;
+inicio [shape=plaintext, label="INICIO"];
+inicio -> n0;
+fin [shape=plaintext, label="FIN"];
+fin -> n6;
+}

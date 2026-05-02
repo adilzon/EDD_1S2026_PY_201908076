@@ -1,0 +1,12 @@
+digraph BST_Equipos {
+    rankdir=TB;
+    node [shape=box, style=filled, fontname="Arial"];
+
+    "EQU-001" [style=filled, fillcolor=gold, label="Codigo: EQU-001\nNombre: Monitor de Signos Vitales\nMarca: MediTechGT\nCantidad: 10\nVida util: 2026-03-10"];
+    "EQU-001" -> "EQU-002" [color=blue, label="Mayor"];
+    "EQU-002" [style=filled, fillcolor=lightblue, label="Codigo: EQU-002\nNombre: Electrocardiógrafo 12 Derivaciones\nMarca: MediTechGT\nCantidad: 5\nVida util: 2026-03-10"];
+    "EQU-002" -> "EQU-003" [color=blue, label="Mayor"];
+    "EQU-003" [style=filled, fillcolor=lightblue, label="Codigo: EQU-003\nNombre: Bomba de Infusión Volumétrica\nMarca: BuenaVidaGT\nCantidad: 20\nVida util: 2026-03-10"];
+    "EQU-003" -> "EQU-004" [color=blue, label="Mayor"];
+    "EQU-004" [style=filled, fillcolor=lightgreen, label="Codigo: EQU-004\nNombre: Tensiómetro Manual Aneroide\nMarca: BuenaVidaGT\nCantidad: 20\nVida util: 2026-03-12"];
+}
