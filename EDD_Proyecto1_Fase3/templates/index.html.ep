@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTrack Fase 3 - EDD</title>
+    <!-- Vis.js para visualización de Grafos -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #2c3e50;
+        }
+        .header {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        .status { color: #27ae60; font-weight: bold; }
+        
+        /* Estilos para el visor del Grafo */
+        #mynetwork {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-top: 15px;
+            display: none; /* Oculto inicialmente */
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 MedTrack Fase 3</h1>
+        <h2>Trazabilidad, Rutas y Seguridad</h2>
+        <p>Estructuras de Datos - Universidad San Carlos de Guatemala</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h3>Estado del Sistema</h3>
+            <p class="status">● Servidor Mojolicious corriendo correctamente</p>
+            <p><a href="/status" target="_blank">Ver estado completo del sistema</a></p>
+        </div>
+
+        <div class="card">
+            <h3>Funcionalidades Fase 3</h3>
+            <ul>
+                <li>✅ Tabla Hash (por tipo de usuario)</li>
+                <li>✅ Grafo No Dirigido (red de colaboración)</li>
+                <li>⏳ Compresión LZW para chats</li>
+                <li>⏳ Árbol de Merkle</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Visor de Red de Colaboración (Grafo)</h3>
+            <p>Visualiza en tiempo real las conexiones activas entre los profesionales del hospital.</p>
+            <button class="btn" onclick="cargarGrafo()">Cargar / Actualizar Grafo</button>
+            <div id="mynetwork"></div>
+        </div>
+        
+        <div class="card">
+            <h3>Carga Masiva de Relaciones</h3>
+            <p>Pega aquí el JSON de relaciones iniciales (ACTIVA, PENDIENTE, RECHAZADA):</p>
+            <textarea id="jsonRelaciones" rows="6" style="width:100%; margin-bottom: 10px; font-family: monospace;">[
+  { "solicitante": "COL-10001", "receptor": "COL-10002", "estado": "ACTIVA" },
+  { "solicitante": "COL-30004", "receptor": "COL-10001", "estado": "PENDIENTE" }
+]</textarea><br>
+            <button class="btn" onclick="cargarRelaciones()">Procesar JSON</button>
+        </div>
+
+        <div class="card">
+            <h3>Pruebas rápidas (Nuevas)</h3>
+            <p>
+                <a href="/admin/usuarios_pendientes" target="_blank">→ Ver Usuarios Pendientes de Depto</a><br>
+                <a href="/admin/red/reporte_adyacencia" target="_blank">→ Ver Reporte Lista Adyacencia</a><br>
+                <a href="/usuario/COL-10001/solicitudes" target="_blank">→ Ver Solicitudes de COL-10001</a><br>
+            </p>
+            <h3>Pruebas Rápidas (Anteriores)</h3>
+            <p>
+                <a href="/saludo" target="_blank">→ Ver prueba JSON</a><br>
+                <a href="/status" target="_blank">→ Ver estado del sistema</a><br>
+                <a href="/admin/red/aislados" target="_blank">→ Ver usuarios aislados</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function cargarRelaciones() {
+            try {
+                const jsonStr = document.getElementById('jsonRelaciones').value;
+                const data = JSON.parse(jsonStr);
+                
+                fetch('/admin/cargar_relaciones', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if(res.success) {
+                        alert(res.mensaje + ". Se procesaron " + res.cantidad + " relaciones.");
+                        cargarGrafo(); // Refrescar grafo
+                    } else {
+                        alert("Error: " + res.error);
+                    }
+                });
+            } catch(e) {
+                alert("JSON inválido: " + e.message);
+            }
+        }
+        function cargarGrafo() {
+            const container = document.getElementById('mynetwork');
+            container.style.display = 'block'; // Mostrar contenedor
+
+            fetch('/admin/red/grafo')
+                .then(response => response.json())
+                .then(data => {
+                    // Configurar los nodos para que se vean más bonitos
+                    const nodes = new vis.DataSet(
+                        data.nodes.map(n => ({
+                            id: n.id,
+                            label: n.id,
+                            shape: 'dot',
+                            size: 15,
+                            color: {
+                                background: '#3498db',
+                                border: '#2980b9'
+                            },
+                            font: { color: '#2c3e50', size: 12 }
+                        }))
+                    );
+
+                    // Configurar aristas
+                    const edges = new vis.DataSet(data.edges);
+
+                    // Proveer data a Vis.js
+                    const graphData = { nodes: nodes, edges: edges };
+                    
+                    const options = {
+                        physics: {
+                            barnesHut: {
+                                gravitationalConstant: -2000,
+                                centralGravity: 0.3,
+                                springLength: 150
+                            }
+                        },
+                        edges: {
+                            width: 2,
+                            color: '#95a5a6'
+                        }
+                    };
+
+                    new vis.Network(container, graphData, options);
+                })
+                .catch(err => {
+                    console.error("Error al cargar el grafo:", err);
+                    alert("Hubo un error al cargar el grafo. Asegúrate de que el servidor esté corriendo.");
+                });
+        }
+    </script>
+</body>
+</html>
